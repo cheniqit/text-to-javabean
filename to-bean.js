@@ -72,6 +72,7 @@ function toBeanText(bean) {
     var typeSet = {};
     var shoudImportJackson = false;
     var tpl = document.getElementById('getset-templ').innerHTML;
+    var convertType = document.getElementById('convert-type-input').value;
 
     //依次遍历每个属性
     for (key in beanFields) {
@@ -80,7 +81,11 @@ function toBeanText(bean) {
         var camelKey = camelCase(key);
         if (camelKey != key) {
             //标准要用Jackson工具包做转换
-            fieldText += '   @JsonProperty("' + key + '")\n';
+            if(convertType === 'fastjson') {
+                fieldText += '   @JSONField(name ="' + key + '")\n';
+            }else{
+                fieldText += '   @JsonProperty("' + key + '")\n';
+            }
             shoudImportJackson = true;
         }
 
@@ -113,8 +118,14 @@ function toBeanText(bean) {
             importText += "import " + importMap[t] + ";\n";
         }
     }
+
     if (shoudImportJackson) {
-        importText += "import org.codehaus.jackson.annotate.JsonIgnoreProperties;\nimport org.codehaus.jackson.annotate.JsonProperty;"
+        if(convertType === 'fastjson'){
+            importText += "import org.codehaus.jackson.annotate.JsonIgnoreProperties;\nimport org.codehaus.jackson.annotate.JsonProperty;"
+        }else{
+            importText += "import com.alibaba.fastjson.annotation.JSONField;"
+        }
+
     }
     var packageName = document.getElementById('package-input').value;
     if(packageName){
@@ -252,6 +263,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
     $("#input-textarea,.config input").live("change keyup paste",function(){
         main();
     });
-
+    $("#input-textarea,.config select").live("change keyup paste",function(){
+        main();
+    });
 })
 
