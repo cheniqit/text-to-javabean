@@ -121,9 +121,9 @@ function toBeanText(bean) {
 
     if (shoudImportJackson) {
         if(convertType === 'fastjson'){
-            importText += "import org.codehaus.jackson.annotate.JsonIgnoreProperties;\nimport org.codehaus.jackson.annotate.JsonProperty;"
-        }else{
             importText += "import com.alibaba.fastjson.annotation.JSONField;"
+        }else{
+            importText += "import org.codehaus.jackson.annotate.JsonIgnoreProperties;\nimport org.codehaus.jackson.annotate.JsonProperty;"
         }
 
     }
