@@ -18,7 +18,7 @@ function camelCase(input) {
 
 function camelCaseWithFirstCharUpper(input){
     if(!input){return ""};
-    input = camelCase(input);
+    //input = camelCase(input);
     return input[0].toUpperCase()+input.substr(1);
 }
 
