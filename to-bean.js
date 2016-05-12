@@ -81,7 +81,9 @@ function toBeanText(bean) {
         var camelKey = camelCase(key);
         if (camelKey != key) {
             //标准要用Jackson工具包做转换
-            if(convertType === 'fastjson') {
+            if(convertType === 'gson') {
+                fieldText += '   @SerializedName("' + key + '")\n';
+            }else if(convertType === 'fastjson') {
                 fieldText += '   @JSONField(name ="' + key + '")\n';
             }else{
                 fieldText += '   @JsonProperty("' + key + '")\n';
@@ -120,7 +122,9 @@ function toBeanText(bean) {
     }
 
     if (shoudImportJackson) {
-        if(convertType === 'fastjson'){
+        if(convertType === 'gson'){
+            importText += "import com.google.gson.annotations.SerializedName;"
+        }if(convertType === 'fastjson'){
             importText += "import com.alibaba.fastjson.annotation.JSONField;"
         }else{
             importText += "import org.codehaus.jackson.annotate.JsonIgnoreProperties;\nimport org.codehaus.jackson.annotate.JsonProperty;"
